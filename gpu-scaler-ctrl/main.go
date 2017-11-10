@@ -25,12 +25,6 @@ var interval = flag.Int("interval", 300, "Seconds before scaling checks")
 
 func main() {
 	flag.Parse()
-	// Lock and update Map (sync Map)
-	// Each X seconds, check if the general moving avg is good or not
-	// Scale up, scale down.
-	// Log the decision.
-	// Fetch from the Cluster Kubernetes the `replicas` for the given deployment.
-	// Scale up or down / Patch for the given thing... kubernetes client-go
 
 	http.HandleFunc("/v1/gpu_usage", func(w http.ResponseWriter, r *http.Request) {
 		hostname := r.FormValue("hostname")
