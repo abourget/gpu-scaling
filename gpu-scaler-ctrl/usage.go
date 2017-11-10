@@ -30,9 +30,9 @@ func computeUsageAvg() float64 {
 	tenMinsOld := time.Now().Add(-10 * time.Minute)
 
 	newClusterUsage := map[string]GPUVal{}
-	var float64 sum
+	var sum float64
 	for hostname, val := range clusterUsage {
-		if tenMinsOld.Before(val.lastSeen) {
+		if val.lastSeen.Before(tenMinsOld) {
 			continue
 		}
 
@@ -42,5 +42,5 @@ func computeUsageAvg() float64 {
 
 	clusterUsage = newClusterUsage
 
-	return sum / len(newClusterUsage)
+	return sum / float64(len(newClusterUsage))
 }

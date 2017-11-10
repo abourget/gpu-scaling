@@ -25,7 +25,13 @@ func main() {
 	for {
 		time.Sleep(time.Duration(*interval) * time.Second)
 
+		fmt.Println("Fetching GPU utilization")
 		utilization, err := fetchUtilization()
+		if err != nil {
+			log.Println("Error feching utilization:", err)
+			continue
+		}
+		fmt.Printf("-> %f\n", utilization)
 
 		req, err := http.NewRequest("POST", *destination, nil)
 		if err != nil {
@@ -41,6 +47,7 @@ func main() {
 		vals.Set("volatile_gpu_usage", fmt.Sprintf("%f", utilization))
 		req.URL.RawQuery = vals.Encode()
 
+		fmt.Println("Posting to", *destination)
 		resp, err := http.DefaultClient.Do(req)
 		if err != nil {
 			log.Println("Error launching HTTP request to scaler:", err)
